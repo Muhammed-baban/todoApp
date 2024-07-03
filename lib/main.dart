@@ -126,8 +126,9 @@ class _TodoListPageState extends State<TodoListPage> {
       ),
     );
   }
+void _showEditDialog(Todo todo) {
+  TextEditingController _editController = TextEditingController(text: todo.title);
 
-  void _showEditDialog(Todo todo) {
   showDialog(
     context: context,
     builder: (context) {
@@ -135,6 +136,7 @@ class _TodoListPageState extends State<TodoListPage> {
       return AlertDialog(
         title: Text('Edit Todo'),
         content: TextField(
+          controller: _editController,
           decoration: InputDecoration(
             labelText: 'Todo Title',
           ),

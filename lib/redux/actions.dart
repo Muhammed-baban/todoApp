@@ -17,3 +17,9 @@ class DeleteTodoAction {
 
   DeleteTodoAction(this.id);
 }
+
+class UpdateTodoAction {
+  final Todo updatedTodo;
+
+  UpdateTodoAction(this.updatedTodo);
+}

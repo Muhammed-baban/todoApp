@@ -99,12 +99,23 @@ class _TodoListPageState extends State<TodoListPage> {
                           StoreProvider.of<AppState>(context).dispatch(ToggleTodoAction(todo.id));
                         },
                       ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          StoreProvider.of<AppState>(context).dispatch(DeleteTodoAction(todo.id));
-                        },
-                      ),
+                     trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.edit),
+                          onPressed: () {
+                            _showEditDialog(todo);
+                          },
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            StoreProvider.of<AppState>(context).dispatch(DeleteTodoAction(todo.id));
+                          },
+                        ),
+                      ],
+                    ),
                     );
                   },
                 );
@@ -115,4 +126,42 @@ class _TodoListPageState extends State<TodoListPage> {
       ),
     );
   }
+
+  void _showEditDialog(Todo todo) {
+  showDialog(
+    context: context,
+    builder: (context) {
+      String updatedTitle = todo.title;
+      return AlertDialog(
+        title: Text('Edit Todo'),
+        content: TextField(
+          decoration: InputDecoration(
+            labelText: 'Todo Title',
+          ),
+          onChanged: (value) {
+            updatedTitle = value;
+          },
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text('Cancel'),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          TextButton(
+            child: Text('Save'),
+            onPressed: () {
+              if (updatedTitle.isNotEmpty) {
+                todo.title = updatedTitle;
+                StoreProvider.of<AppState>(context).dispatch(UpdateTodoAction(todo));
+              }
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      );
+    },
+  );
+}
 }
